@@ -1,19 +1,14 @@
 import React, { Component, PureComponent } from 'react'
-import debounce from 'lodash.debounce'
 import color from '../../helpers/color'
 
 export const ColorWrap = (Picker) => {
   class ColorPicker extends (PureComponent || Component) {
     constructor(props) {
-      super()
+      super(props)
 
       this.state = {
         ...color.toState(props.color, 0),
       }
-
-      this.debounce = debounce((fn, data, event) => {
-        fn(data, event)
-      }, 100)
     }
 
     static getDerivedStateFromProps(nextProps, state) {
@@ -27,7 +22,6 @@ export const ColorWrap = (Picker) => {
       if (isValidColor) {
         const colors = color.toState(data, data.h || this.state.oldHue)
         this.setState(colors)
-        this.props.onChangeComplete && this.debounce(this.props.onChangeComplete, colors, event)
         this.props.onChange && this.props.onChange(colors, event)
       }
     }

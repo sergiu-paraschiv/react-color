@@ -1,27 +1,17 @@
 import React, { Component, PureComponent } from 'react'
 import reactCSS from 'reactcss'
-import throttle from 'lodash.throttle'
 import * as saturation from '../../helpers/saturation'
 
 export class Saturation extends (PureComponent || Component) {
-  constructor(props) {
-    super(props)
-
-    this.throttle = throttle((fn, data, e) => {
-      fn(data, e)
-    }, 50)
-  }
-
   componentWillUnmount() {
     this.throttle.cancel()
     this.unbindEventListeners()
   }
 
   handleChange = (e) => {
-    typeof this.props.onChange === 'function' && this.throttle(
-      this.props.onChange,
-      saturation.calculateChange(e, this.props.hsl, this.container),
-      e,
+    typeof this.props.onChange === 'function' && this.props.onChange(
+        saturation.calculateChange(e, this.props.hsl, this.container),
+        e
     )
   }
 
